@@ -1,0 +1,36 @@
+sign up
+sign in
+
+update user details - PUT: privateProfile, username or name
+update profile picture
+remove profile picture
+
+request follow
+request unfollow
+
+create post
+edit post
+delete post
+
+get-activity
+get-wall
+get-feed (don't know what this is called)
+search
+
+
+// everything below this requires a change in activity
+like post
+unlike post
+
+add comment on post
+edit comment on post
+delete comment on post
+like comment
+
+add reply to comment
+edit reply on comment
+delete reply on comment
+like reply on comment
+
+
+

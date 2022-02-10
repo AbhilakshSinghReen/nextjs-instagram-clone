@@ -1,0 +1,35 @@
+// MERN Instagram Clone
+
+App Architecture 
+
+DB
+All are seperate collections
+[users, posts, comments]
+users: email, contactNumber, username, name, hashedPassword, profilePicture, private (default: True), followers:[user reference], following: [user reference], unacceptedFollowerRequests: [user reference], unacceptedFollowingRequests: [user reference]
+activity?
+posts: creator [user reference], caption, postType, mediaCount, mediaTypes, mediaUrls , likes: [user reference], 
+comments: post [post reference], creator [user reference], content, likes: [user reference], replies: [creator, content, likes:[user reference]]
+
+ADDITIONAL FEATURES
+// CHATTING STUFF
+// VIDEO CALLING
+// SEARCHING
+// SETTINGS: set profile to private/public, change email, change username,
+
+
+UI
+Sign Up
+Sign In
+
+// Require login
+Feed
+Profile page: wall + settings (modal)
+Followers list page
+Following list page
+Notifications (Activity)
+Search (displays posts from public profiles)
+
+All chats
+Single chat interface (contains video call button)
+Video chat
+

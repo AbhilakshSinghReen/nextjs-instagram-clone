@@ -1,0 +1,559 @@
+-----------------------------------------------------------
+Task: Ping server
+{    
+    Route: "/ping"
+    Method: GET
+    Auth required: No
+    Content-Type: NO BODY
+    // Required fields: []
+    // Optional fields: []
+    // Example Content
+
+    Responses:
+    Server is online
+    Status: 200
+        {
+        "message": "Server is online."
+        }    
+}
+
+-----------------------------------------------------------
+Task: Sign up a new user
+{    
+    Route: "/auth/sign-up"
+    Method: POST
+    Auth required: No
+    Content-Type: "application/json"
+    Required fields: [email, password, username, name]
+    Optional fields: []
+    Example Content:
+    {
+    "email": "ant@ant.com",
+    "password": "12345678",
+    "username": "a_nice_teacher",
+    "name": "A Nice Teacher"
+    }
+
+    Responses:
+    User created
+    Status: 201
+        {
+            "errorOccurred": false,
+            "message": "User created successfully.",
+            "user": {
+                "email": "asrok@gmail.com",
+                "name": "Abhilaksh ok",
+                "username": "asrok",
+                "privateProfile": true,
+                "followers": [],
+                "following": [],
+                "unacceptedFollowerRequests": [],
+                "profilePicture": ""
+            }
+        }
+
+    A required field was not provided
+    Status: 400
+        {
+            "error": [
+                "email is a required field"
+            ]
+        }
+
+    A unique field has already been taken
+    Status: 400
+        {
+            "errorOccurred": true,
+            "message": "Duplicate keys.",
+            "duplicateKeys": [
+                "email"
+            ]
+        }
+
+    Some server-side problem
+    Status: 500
+        {
+            "errorOccurred": true,
+            "message": "Something went wrong.",        
+        }
+}
+
+-----------------------------------------------------------
+Task: Sign in a user
+{    
+    Route: "/auth/sign-in"
+    Method: POST
+    Auth required: No
+    Content-Type: "application/json"
+    Required fields: [emailOrUsername, password]
+    Optional fields: []
+    Example Content 1:
+    {
+    "emailOrUsername": "ant@ant.com",
+    "password": "12345678"
+    }
+    Example Content 2:
+    {
+    "emailOrUsername": "a_nice_teacher",
+    "password": "12345678"
+    }
+
+    Responses:
+    Signed in
+    Status: 200
+        {
+            "token": "you-should-find-a-jwt-here",
+            "tokenValidity": "30d",
+            "user": {
+                "email": "asrok@gmail.com",
+                "name": "Abhilaksh ok",
+                "username": "asrok",
+                "privateProfile": true,
+                "followers": [],
+                "following": [],
+                "unacceptedFollowerRequests": [],
+                "profilePicture": ""
+            }
+        }
+
+    A required field was not provided
+    Status: 400
+        {
+            "error": [
+                "emailOrUsername is a required field"
+            ]
+        }
+
+    Invalid credentials: no more information is provided for security
+    Status: 400
+        {
+            "errorOccurred": true,
+            "message": "Invalid credentials.",
+            "validated": false
+        }
+
+    Some server-side problem
+    Status: 500
+        {
+            "errorOccurred": true,
+            "message": "Something went wrong.",        
+        }
+}
+
+-----------------------------------------------------------
+Task: Update User Details
+{    
+    Route: "/user/update-details"
+    Method: PUT
+    Auth required: Yes
+    Content-Type: "application/json"
+    Required fields: []
+    Optional fields: [username, name, contactNumber, privateProfile]    
+    Example Content 1:
+    {
+    "username": "this-is-a-new-username",
+    "name": "this-is-a-new-name"
+    }
+    Example Content 2:
+    {
+    "privateProfile": false
+    }
+
+    Responses:
+    Updated successfully
+    Status: 200
+        {
+        "errorOccurred": false,
+        "message": "User details updated successfully.",
+        "changes": {
+            "privateProfile": false
+        }
+
+    Duplicate keys
+    Status: 400
+        {
+        "errorOccurred": true,
+        "message": "Duplicate keys.",
+        "duplicateKeys": [
+            "username"
+        ]
+        }
+
+    Some server-side problem
+    Status: 500
+        {
+            "error": Object,
+            "errorOccurred": true,
+            "message": "Something went wrong.",        
+        }
+}
+
+-----------------------------------------------------------
+Task: Update User Profile Picture
+{    
+    Route: "/user/update-profile-picture"
+    Method: PUT
+    Auth required: Yes
+    Content-Type: "multipart/form-data"
+    Required fields: [profilePicture]
+    Optional fields: []
+    Example Content 1:
+    {
+    "profilePicture": File
+    }
+
+    Responses:
+    Updated successfully
+    Status: 200
+        {
+        "errorOccurred": false,
+        "message": "Profile picture updated successfully.",
+        "profilePicture": "/storage/profilePictures/6202587c38bdda95d79256f3/d7d84f2f67502dd5ddf1ab607.jpg"
+        }
+
+    Some server-side problem
+    Status: 500
+        {
+            "error": Object,
+            "errorOccurred": true,
+            "message": "Something went wrong.",        
+        }
+}
+
+-----------------------------------------------------------
+Task: Remove User Profile Picture
+{    
+    Route: "/user/remove-profile-picture"
+    Method: DELETE
+    Auth required: Yes
+    Content-Type: NO BODY
+    // Required fields: []
+    // Optional fields: []
+    // Example Content    
+
+    Responses:
+    Removed successfully
+    Status: 200
+        {
+        "errorOccurred": false,
+        "message": "Profile picture removed successfully."
+        }
+
+    Some server-side problem
+    Status: 500
+        {
+            "error": Object,
+            "errorOccurred": true,
+            "message": "Something went wrong.",        
+        }
+}
+
+-----------------------------------------------------------
+Task: Create Post
+{    
+    Route: "/posts/create"
+    Method: POST
+    Auth required: Yes
+    Content-Type: "multipart/form-data"
+    Required fields: [caption, media1 (file)]
+    Optional fields: [media2 (file), media3 (file), media4 (file), ...]
+    Example Content 1:
+    {
+    "caption": "Private User 2 Post 3"
+    "media1": File
+    }
+    Example Content 2:
+    {
+    "caption": "Private User 2 Post 3"
+    "media1": File
+    "media2": File
+    }
+
+    Responses:
+    Created successfully
+    Status: 200
+        {
+            "errorOccurred": false,
+            "message": "Post created successfully."
+        }
+
+    Caption not provided or 0 media files provided
+    Status: 400
+        {
+            "errorOccurred": true,
+            "message": "Caption and media must be provided."
+        }
+
+    Some server-side problem
+    Status: 500
+        {
+            "error": Object,
+            "errorOccurred": true,
+            "message": "Something went wrong.",        
+        }
+}
+
+-----------------------------------------------------------
+Task: Delete Post
+{    
+    Route: "/posts/delete"
+    Method: POST
+    Auth required: Yes
+    Content-Type: "application/json"
+    Required fields: [postId (string)]
+    Optional fields: []
+    Example Content 1:
+        {
+            "postId":"62009aa0ea3fe9ea56ebf09b"
+        }
+    
+    Responses:
+    Created successfully
+    Status: 200
+        {
+            "errorOccurred": false,
+            "message": "Post deleted successfully."
+        }
+
+    Trying to delete another user's post
+    Status: 400
+        {
+            "errorOccurred": true,
+            "message": "Unauthorized."
+        }
+
+    Some server-side problem
+    Status: 500
+        {
+            "error": Object,
+            "errorOccurred": true,
+            "message": "Something went wrong.",        
+        }
+}
+
+-----------------------------------------------------------
+Task: Edit Post
+{    
+    Route: "/posts/edit"
+    Method: PATCH
+    Auth required: Yes
+    Content-Type: "multipart/form-data"
+    Required fields: [postId (string)]
+    Optional fields: [caption(string), mediaToDelete(stringified JSON), media1(File), media2(File), ...]
+    
+    A_Small_Explanation: `
+    To change the caption, pass in a caption.
+    If not caption is passed, the caption will remain unchanged.
+    You cannot pass an empty caption.
+
+    To delete old media, pass in mediaToDelete which is a stringified
+    array containing the urls of all the media to the deleted.
+    You cannot delete all the media of the post without adding
+    any new media.
+
+    To add new media, pass in the media1, media2, and so on files.
+    `
+    Example Content 1:
+        {
+            "postId":"62009aa0ea3fe9ea56ebf09b",
+            "caption" : "Post #1",
+            "mediaToDelete": "["/storage/posts/62009aa0ea3fe9ea56ebf09b/b3c319d70ee1f4f265176fb17.jpg","/storage/posts/62009aa0ea3fe9ea56ebf09b/b3c319d70ee1f4f265176fb16.jpg","/storage/posts/62009aa0ea3fe9ea56ebf09b/b3c319d70ee1f4f265176fb15.jpg","/storage/posts/62009aa0ea3fe9ea56ebf09b/b3c319d70ee1f4f265176fb14.jpg","/storage/posts/62009aa0ea3fe9ea56ebf09b/b3c319d70ee1f4f265176fb13.jpg","/storage/posts/62009aa0ea3fe9ea56ebf09b/b3c319d70ee1f4f265176fb12.jpg","/storage/posts/62009aa0ea3fe9ea56ebf09b/b3c319d70ee1f4f265176fb11.jpg","/storage/posts/62009aa0ea3fe9ea56ebf09b/b3c319d70ee1f4f265176fb10.jpg"]"
+            "media1": File
+        }
+
+    Example Content 2:
+        {
+            "postId":"62009aa0ea3fe9ea56ebf09b",
+            "caption" : "Post #1",
+            "mediaToDelete": "["/storage/posts/62009aa0ea3fe9ea56ebf09b/b3c319d70ee1f4f265176fb17.jpg"]"            
+        }   
+    
+    Example Content 3:
+        {
+            "postId":"62009aa0ea3fe9ea56ebf09b",
+            "caption" : "Post #1",
+        }   
+
+    Example Content 4:
+        {
+            "postId":"62009aa0ea3fe9ea56ebf09b",
+            "caption" : "Post #1",
+            "media1": File
+        }
+
+    Example Content 5:
+        {
+            "postId":"62009aa0ea3fe9ea56ebf09b",            
+            "media1": File
+        }    
+        
+    Example Content 6:
+        {
+            "postId":"62009aa0ea3fe9ea56ebf09b",            
+            "mediaToDelete": "["/storage/posts/62009aa0ea3fe9ea56ebf09b/b3c319d70ee1f4f265176fb17.jpg"]"            
+            "media1": File
+        }    
+
+    Responses:
+    Edited successfully
+    Status: 200
+        {
+            "errorOccurred": false,
+            "message": "Post edited successfully."
+        }
+
+    Trying to edit another user's post
+    Status: 400
+        {
+            "errorOccurred": true,
+            "message": "Unauthorized."
+        }
+
+    Trying to remove all media
+    Status: 400
+        {
+            "errorOccurred": true,
+            "message": "Cannot delete all media from post without adding any more."
+        }
+    
+    Sending no changes
+        {
+            "errorOccurred": true,
+            "httpCode": 400,
+            "message": "No changes were found."
+        }
+
+    Some server-side problem
+    Status: 500
+        {
+            "error": Object,
+            "errorOccurred": true,
+            "message": "Something went wrong.",        
+        }
+}
+
+-----------------------------------------------------------
+Task: Like Post
+{    
+    Route: "/posts/like"
+    Method: POST
+    Auth required: Yes
+    Content-Type: "application/json"
+    Required fields: [postId]
+    Optional fields: []
+    Example Content :
+        {
+            "postId":"6200f8d2fe3eee90a2385c3b"
+        }
+
+    Responses:
+    Created successfully
+    Status: 200
+        {
+            "errorOccurred": false,
+            "httpCode": 201,
+            "message": "Post liked successfully."
+        }
+
+    Trying to like a post twice
+    Status: 400
+        {
+            "errorOccurred": true,
+            "message": "Double like attempt."
+        }
+
+    Some server-side problem
+    Status: 500
+        {
+            "error": Object,
+            "errorOccurred": true,
+            "message": "Something went wrong.",        
+        }
+}
+
+-----------------------------------------------------------
+Task: Unlike Post
+{    
+    Route: "/posts/unlike"
+    Method: DELETE
+    Auth required: Yes
+    Content-Type: "application/json"
+    Required fields: [postId]
+    Optional fields: []
+    Example Content :
+        {
+            "postId":"6200f8d2fe3eee90a2385c3b"
+        }
+
+    Responses:
+    Created successfully
+    Status: 200
+        {
+            "errorOccurred": false,
+            "message": "Post unliked successfully."
+        }
+
+    Trying to unlike a post that you haven't liked
+    Status: 400
+        {
+            "errorOccurred": true,
+            "message": "Cannot unlike."
+        }
+
+    Some server-side problem
+    Status: 500
+        {
+            "error": Object,
+            "errorOccurred": true,
+            "message": "Something went wrong.",        
+        }
+}
+
+
+
+
+
+
+
+
+
+
+
+METADATA BEYOND THIS IS INCOMPLETE
+-----------------------------------------------------------
+{
+    Task: Request Follow
+    Route: "/user/request-follow"
+    Method: POST
+    Auth required: Yes
+    Content-Type: "application/json"
+    Required fields: [userToFollow]
+    Optional fields: []
+    Example Content 1:
+        {
+        "userToFollow":"6202587c38bdda95d79256f3"
+        }    
+
+    Responses:
+    Follow Requested (if other user has a private profile)
+    Status: 200
+        {
+        "errorOccurred": false,
+        "message": "Follow requested."
+        }
+
+    Follow Requested (if other user has a private profile)
+    Status: 200
+        {
+        "errorOccurred": false,
+        "message": "Follow requested."
+        }    
+
+    Some server-side problem
+    Status: 500
+        {
+            "error": Object,
+            "errorOccurred": true,
+            "message": "Something went wrong.",        
+        }
+}
